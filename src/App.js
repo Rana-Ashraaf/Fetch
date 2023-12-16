@@ -1,23 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from "react";
+import "./App.css";
 
 function App() {
+  const [memeData, setMemes] = useState([]);
+
+  useEffect(() => {
+    function fetchData() {
+      fetch("https://meme-api.com/gimme/wholesomememes/1000")
+        .then((res) => res.json())
+        .then((res) => setMemes(res.memes));
+    }
+    fetchData();
+  }, []);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Memes</h1>
+      {memeData.map((meme, index) => {
+        return (
+          <img style={{ width: "50%" }} key={index} src={meme.url} alt="meme" />
+        );
+      })}
     </div>
   );
 }
